@@ -20,3 +20,48 @@ def conversion_difference(n1: int, n2: int, conv1: float, conv2: float, trust: i
         significance = "Yes, the difference is statistically significant"
 
     return result + '. ' + significance
+
+
+def conficence_interval(n: int, cr: float, trust: int):
+    """
+    :param n: размер выборки
+    :param cr: оценка конверсии
+    :param trust: уровень доверия
+
+    :return: доверительный интервал
+    """
+    value = 0
+    if trust == 95:
+        value = 1.96
+
+    left = cr - value * sqrt((cr * (1-cr) / n))
+    right = cr + value * sqrt((cr * (1-cr) / n))
+
+    rounded_left = round(left * 100, 3)
+    rounded_right = round(right * 100, 3)
+
+    print('[{l}%; {r}%]'.format(l=rounded_left, r=rounded_right))
+
+
+def sample_size(cr: float, conf_int: float, trust: int):
+    """
+    :param cr: оценка конверсии
+    :param conf_int: точность
+    :param trust: уровень доверия
+
+    :return: размер выборки
+    """
+    value = 0
+    if trust == 95:
+        value = 1.96
+
+    n = value ** 2 * ((cr * (1-cr)) / (conf_int ** 2))
+
+    rounded_n = round(n)
+
+    return rounded_n
+
+
+if __name__ == "__main__":
+    result = conversion_difference(3500, 3500, 0.174, 0.154, 95)
+    print(result)
